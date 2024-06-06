@@ -1,5 +1,5 @@
 # this is a basic workflow to help you get started with Actions
-#!/usr/bin/bash env bash
+#!/usr/bin/env bash
 name: company
 
 # Controls when the workflow will run
