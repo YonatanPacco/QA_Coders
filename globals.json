@@ -1,0 +1,32 @@
+{
+	"id": "1caaf25d-4160-4ed2-8df7-5d02a97072c7",
+	"values": [
+		{
+			"key": "servidor",
+			"value": "https://develop.qacoders-academy.com.br/api",
+			"enabled": true
+		},
+		{
+			"key": "TokenQA-Coders",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "Password",
+			"value": "1234@Test",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "AccessProfile",
+			"value": "ADMIN",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2024-06-05T23:24:42.781Z",
+	"_postman_exported_using": "Postman/11.1.14"
+}

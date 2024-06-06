@@ -1,0 +1,511 @@
+{
+	"info": {
+		"_postman_id": "b6a1b414-38f8-401b-9974-fe68ec130672",
+		"name": "Company_success",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33882409"
+	},
+	"item": [
+		{
+			"name": "cadastro company - success",
+			"item": [
+				{
+					"name": "login Qa coders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// indicador de solicitud con exito\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Garantizacion de existencia de token\r",
+									"pm.test(\"Check is token authorization exits\", function(){\r",
+									"    pm.expect(JSON.parse(responseBody).token.to.exist);\r",
+									"})\r",
+									"\r",
+									"pm.environment.set(\"TokenQA-Coders\", JSON.parse(responseBody).token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"mail\": \"sysadmin@qacoders.com\",\r\n  \"password\": \"1234@Test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{servidor}}/login/",
+							"host": [
+								"{{servidor}}"
+							],
+							"path": [
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//creacion de masa de datos FirtName\r",
+									"function firstName(){\r",
+									"    let firstName = [\"William\",\"Joao\",\"Maria\", \"Carla\", \"Jazmin\", \"Mateo\", \"Liza\", \"Rodrigo\", \"Glendy\", \"Edilson\", \"Oscar\", \"Leo\"];\r",
+									"\r",
+									"    let randomItem = firstName[Math.floor(Math.random() * firstName.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"}\r",
+									"\r",
+									"//recuperacion de FirtName a variabale de entorno\r",
+									"pm.environment.set(\"FirstName\", firstName())\r",
+									"\r",
+									"//Creacion de masa de datos LastName\r",
+									"function lastName(){\r",
+									"    let lastName = [\"Alves da Silva\",\"Cardena da Alves\",\"de Silva\", \"Consa da Lima\", \"Sanches da Alves\", \"Alves de Souza\", \"Pacco da Souza\", \"da Ghade\",\"da Maldonado\"];\r",
+									"\r",
+									"    let randomItem = lastName[Math.floor(Math.random() * lastName.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"}\r",
+									"\r",
+									"//recueperacion de LastName a varaiable de entorno\r",
+									"pm.environment.set(\"LastName\", lastName())\r",
+									"\r",
+									"//concatenacion de firtName y LastName \r",
+									"pm.environment.set(\"FullName\", pm.environment.get(\"FirstName\") + \" \" + pm.environment.get(\"LastName\"));\r",
+									"\r",
+									"//===================================================================================================\r",
+									"\r",
+									"//Creacion de mas ade datos de Emails\r",
+									"function providerMail(){\r",
+									"    let providerMail = [\"@yahoo.com.br\",\"@gmail.com\", \"@outlook.com\", \"@hotmail.com\", \"@oul.com.br\"];\r",
+									"\r",
+									"    let randomItem = providerMail[Math.floor(Math.random() * providerMail.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"}\r",
+									"\r",
+									"// recuperacion de ProviderEmail a variable de entorno\r",
+									"pm.environment.set(\"ProviderMail\", providerMail());\r",
+									"\r",
+									"//concatenacion de firstName y providerEmail para cracion de email\r",
+									"pm.environment.set(\"Mail\", pm.environment.get(\"FirstName\") + \"_\" + pm.variables.replaceIn('{{$timestamp}}') +  pm.environment.get(\"ProviderMail\"));\r",
+									"\r",
+									"//Creacion de masa de datos de cpf\r",
+									"\r",
+									"//concatenacion \r",
+									"pm.environment.set(\"Cpf\", Math.floor(Math.random() * 5) + pm.variables.replaceIn('{{$timestamp}}'));\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Usuario creado\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{TokenQA-Coders}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Mail}}\",\r\n  \"accessProfile\": \"{{AccessProfile}}\",\r\n  \"cpf\": \"{{Cpf}}\",\r\n  \"password\": \"{{Password}}\",\r\n  \"confirmPassword\": \"{{Password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{servidor}}/user/",
+							"host": [
+								"{{servidor}}"
+							],
+							"path": [
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login user com  success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//indicador de solicitud con exito\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"//Recuperando valor de token de Usuario\r",
+									"pm.environment.set(\"TokenUser\", JSON.parse(responseBody).token);\r",
+									"\r",
+									"//teste de existencia do token usuario\r",
+									"pm.test(\"Check is token exits\", function(){\r",
+									"    pm.expect(JSON.parse(responseBody).token).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"mail\": \"{{Mail}}\",\r\n  \"password\": \"{{Password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{servidor}}/login/",
+							"host": [
+								"{{servidor}}"
+							],
+							"path": [
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "company cadastro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// indicador de solicitud con exito y creado\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"//token de authorization es el correcto \r",
+									"pm.test(\"The token is corrrect: Autorizado\", function(){\r",
+									"    pm.expect(pm.environment.get(\"TokenUser\").to.exist);\r",
+									"})\r",
+									"\r",
+									"// Garantizacion de existencia de token\r",
+									"pm.test(\"Check is id exits\", function(){\r",
+									"    pm.expect(JSON.parse(responseBody).newCompany._id).to.exist;\r",
+									"})\r",
+									"\r",
+									"//recuperando id para Variable de entorno\r",
+									"pm.environment.set(\"id_Company\", JSON.parse(responseBody).newCompany._id)\r",
+									"\r",
+									"//Garantizacion del Nombre corporateName entorno igual al nombre retornado (responeBody)\r",
+									"pm.test(\"Check is corporateName true\", function(){\r",
+									"    pm.expect(pm.environment.get(\"CorporateName\")).to.eql(JSON.parse(responseBody).newCompany.corporateName);\r",
+									"})\r",
+									"\r",
+									"//Garantizacion del Nombre registerCompany entorno igual al nombre retornado (responeBody)\r",
+									"pm.test(\"Check is registerCompany true\", function(){\r",
+									"    pm.expect(pm.environment.get(\"RegisterCompany\")).to.eql(JSON.parse(responseBody).newCompany.registerCompany);\r",
+									"})\r",
+									"\r",
+									"//Garantizacion del Nombre responsibleContact entorno igual al nombre retornado (responeBody)\r",
+									"pm.test(\"Check is responsibleContact true\", function(){\r",
+									"    pm.expect(pm.environment.get(\"ResponsibleContact\")).to.eql(JSON.parse(responseBody).newCompany.responsibleContact);\r",
+									"})\r",
+									"\r",
+									"//Garantizacion del Mail Var. entorno igual al mail retornado (responeBody)\r",
+									"pm.test(\"Check is mail true\", function(){\r",
+									"    pm.expect(pm.environment.get(\"Mail\")).to.eql(JSON.parse(responseBody).newCompany.mail);\r",
+									"})\r",
+									"\r",
+									"//Garantizacion del telephone Var. entorno igual al mail retornado (responeBody)\r",
+									"pm.test(\"Check is telephone true\", function(){\r",
+									"    pm.expect(pm.environment.get(\"Telephone\")).to.eql(JSON.parse(responseBody).newCompany.telephone);\r",
+									"})\r",
+									"\r",
+									"//Garantizacion del serviceDescription Var. entorno igual al mail retornado (responeBody)\r",
+									"pm.test(\"Check is serviceDescription true\", function(){\r",
+									"    pm.expect(pm.environment.get(\"ServiceDescription\")).to.eql(JSON.parse(responseBody).newCompany.serviceDescription);\r",
+									"})\r",
+									"\r",
+									"//Garantizacion del telephone Var. entorno igual al mail retornado (responeBody)\r",
+									"pm.test(\"Check is telephone true\", function(){\r",
+									"    pm.expect(pm.environment.get(\"Telephone\")).to.eql(JSON.parse(responseBody).newCompany.telephone);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check is Status true\", function(){\r",
+									"    pm.expect(true).to.eql(JSON.parse(responseBody).newCompany.status);\r",
+									"})\r",
+									"\r",
+									"//Garantizacion del Address Var. entorno igual al mail retornado (responeBody)\r",
+									"// pm.test(\"Check is Address true\", function(){\r",
+									"//     pm.expect(JSON.parse().to.eql(JSON.parse(responseBody).newCompany.address);\r",
+									"// })\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//creacion de masa de datos CorporateName\r",
+									"function corporateName(){\r",
+									"    let corporateName = [\"SmartCity\",\"Rapifac\",\"Thrasher\", \"Sipasac\", \"Automon\", \"Mycode\", \"Orange\", \"QAcademy\", \"Programations\", \"Realtours\"];\r",
+									"\r",
+									"    let randomItem = corporateName[Math.floor(Math.random() * corporateName.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"}\r",
+									"\r",
+									"//recuperacion de CorporateName a variabale de entorno\r",
+									"pm.environment.set(\"CorporateName\", corporateName())\r",
+									"\r",
+									"//----------------------------------------------------------------------------------------\r",
+									"\r",
+									"//Creacion de masa de datos registerCompany\r",
+									"function registerCompany(){\r",
+									"\r",
+									"    let registerCompany = 1212;\r",
+									"\r",
+									"    return registerCompany\r",
+									"}\r",
+									"\r",
+									"//recueperacion de LastName a varaiable de entorno\r",
+									"pm.environment.set(\"RegisterCompany\", registerCompany() + pm.variables.replaceIn('{{$timestamp}}'))\r",
+									"\r",
+									"//----------------------------------------------------------------------------------------\r",
+									"\r",
+									"//Creacion de masa de datos Emails de company\r",
+									"function providerMail(){\r",
+									"    let providerMail = [\"@yahoo.com.br\",\"@gmail.com\", \"@outlook.com\", \"@hotmail.com\", \"@oul.com.br\"];\r",
+									"\r",
+									"    let randomItem = providerMail[Math.floor(Math.random() * providerMail.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"}\r",
+									"\r",
+									"// recuperacion de ProviderEmail a variable de entorno\r",
+									"pm.environment.set(\"ProviderMail\", providerMail());\r",
+									"\r",
+									"//concatenacion de firstName y providerEmail para cracion de email\r",
+									"pm.environment.set(\"Mail\", pm.environment.get(\"CorporateName\") + \"_\" + pm.variables.replaceIn('{{$timestamp}}') +  pm.environment.get(\"ProviderMail\"));\r",
+									"\r",
+									"//----------------------------------------------------------------------------------------\r",
+									"\r",
+									"\r",
+									"//Creacion de masa de datos Matriz de company\r",
+									"function matriz(){\r",
+									"    let matriz = [\"Teste\",\"Develop\", \"Programation\", \"IA\", \"Software and Hardware\"];\r",
+									"\r",
+									"    let randomItem = matriz[Math.floor(Math.random() * matriz.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"}\r",
+									"\r",
+									"// recuperacion de matriz a variable de entorno\r",
+									"pm.environment.set(\"Matriz\", matriz())\r",
+									"\r",
+									"//----------------------------------------------------------------------------------------\r",
+									"\r",
+									"//Creacion de masa de datos ResponsibleContact de company\r",
+									"function responsibleContact(){\r",
+									"    let responsibleContact = [\"William\",\"Joao\",\"Maria\", \"Carla\", \"Jazmin\", \"Mateo\", \"Liza\", \"Rodrigo\", \"Glendy\", \"Edilson\", \"Oscar\", \"Leo\"];\r",
+									"\r",
+									"    let randomItem = responsibleContact[Math.floor(Math.random() * responsibleContact.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"}\r",
+									"\r",
+									"// recuperacion de responsiblecontact a variable de entorno\r",
+									"pm.environment.set(\"ResponsibleContact\", responsibleContact());\r",
+									"function telephonePrefixo(){\r",
+									"\r",
+									"    let telephonePrefixo = 55;\r",
+									"\r",
+									"    return telephonePrefixo\r",
+									"}\r",
+									"//----------------------------------------------------------------------------------------\r",
+									"\r",
+									"//Creacion de masa de datos Telephone de company\r",
+									"\r",
+									"// recuperacion de telephoneNumber a variable de entorno\r",
+									"pm.environment.set(\"Telephone\", telephonePrefixo() + pm.variables.replaceIn('{{$randomPhoneNumberExt}}').replace(/-/, '').replace(/-/,'').replace(/-/,''));\r",
+									"\r",
+									"//----------------------------------------------------------------------------------------\r",
+									"\r",
+									"//Creacion de masa de datos ServiceDescription de company\r",
+									"function serviceDescription(){\r",
+									"    let serviceDescription = [\"Teste\",\"Develop\", \"Programation\", \"IA\", \"Software and Hardware\"];\r",
+									"\r",
+									"    let randomItem = serviceDescription[Math.floor(Math.random() * serviceDescription.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"}\r",
+									"\r",
+									"// recuperacion de ServiceDescription a variable de entorno\r",
+									"pm.environment.set(\"ServiceDescription\", serviceDescription())\r",
+									"\r",
+									"//----------------------------------------------------------------------------------------\r",
+									"// DATOS PARA CAMPO DO ADDREES\r",
+									"// Creacion de masa de datos Zipcode (addrees)\r",
+									"function zipcode (){\r",
+									"    let beforeZipcode = pm.variables.replaceIn('{{$timestamp}}');\r",
+									"\r",
+									"    const caracterDelete = 2;\r",
+									"\r",
+									"    let  zipcode = beforeZipcode.slice(0, -caracterDelete);\r",
+									"\r",
+									"    return zipcode\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"Zipcode\", zipcode())\r",
+									"\r",
+									"// Creacion de masa de datos City (addrees)\r",
+									"function city (){\r",
+									"    let city = pm.variables.replaceIn('{{$randomCity}}');\r",
+									"    return city\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"City\", city())\r",
+									"\r",
+									"// Creacion de masa de datos state (addrees)\r",
+									"function state (){\r",
+									"    let state = pm.variables.replaceIn('{{$randomCountryCode}}');\r",
+									"    return state\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"State\", state())\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{TokenUser}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{CorporateName}}\",\r\n  \"registerCompany\": \"{{RegisterCompany}}\",\r\n  \"mail\": \"{{Mail}}\",\r\n  \"matriz\": \"{{Matriz}}\",\r\n  \"responsibleContact\": \"{{ResponsibleContact}}\",\r\n  \"telephone\": \"{{Telephone}}\",\r\n  \"serviceDescription\": \"{{ServiceDescription}}\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"{{Zipcode}}\",\r\n      \"city\": \"{{City}}\",\r\n      \"state\": \"{{State}}\",\r\n      \"district\": \"Rua das Flores\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{servidor}}/company/",
+							"host": [
+								"{{servidor}}"
+							],
+							"path": [
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "66107ad7aedbabfdea6f609c"
+		}
+	]
+}
