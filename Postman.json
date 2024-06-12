@@ -109,9 +109,33 @@
 			"value": "",
 			"type": "any",
 			"enabled": true
+		},
+		{
+			"key": "District",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "Street",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "Number",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "Contry",
+			"value": "",
+			"type": "any",
+			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-06-12T19:55:02.250Z",
+	"_postman_exported_at": "2024-06-12T23:03:35.881Z",
 	"_postman_exported_using": "Postman/11.1.25"
 }
